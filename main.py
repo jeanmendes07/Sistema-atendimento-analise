@@ -1,5 +1,7 @@
 from modelos.cliente import Cliente
-from modelos.atendente import Atendente
+from estruturas.fila import Fila
+from estruturas.pilha import Pilha
+from estruturas.lista_encadeada import ListaEncadeada
 
 
 def exibir_menu():
@@ -11,21 +13,43 @@ def exibir_menu():
     print("0 - Sair")
 
 
+def testar_estruturas():
+    print("\n=== TESTE FILA ===")
+
+    fila = Fila()
+
+    fila.enfileirar("Cliente A")
+    fila.enfileirar("Cliente B")
+
+    print("Primeiro:", fila.primeiro())
+    print("Saiu:", fila.desenfileirar())
+
+    print("\n=== TESTE PILHA ===")
+
+    pilha = Pilha()
+
+    pilha.empilhar("Atendimento 1")
+    pilha.empilhar("Atendimento 2")
+
+    print("Topo:", pilha.topo())
+    print("Desempilhado:", pilha.desempilhar())
+
+    print("\n=== TESTE LISTA ENCADEADA ===")
+
+    lista = ListaEncadeada()
+
+    cliente1 = Cliente(1, "João", "1111")
+    cliente2 = Cliente(2, "Maria", "2222")
+
+    lista.adicionar(cliente1)
+    lista.adicionar(cliente2)
+
+    for cliente in lista.listar():
+        print(cliente)
+
+
 def main():
-    cliente_teste = Cliente(
-        1,
-        "João Silva",
-        "11999999999",
-        True
-    )
-
-    atendente_teste = Atendente(
-        1,
-        "Maria"
-    )
-
-    print(cliente_teste)
-    print(atendente_teste)
+    testar_estruturas()
 
     while True:
         exibir_menu()
