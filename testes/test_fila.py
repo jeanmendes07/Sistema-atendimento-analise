@@ -15,3 +15,13 @@ def test_desenfileirar():
     fila.enfileirar(10)
 
     assert fila.desenfileirar() == 10
+
+from estruturas.pilha import Pilha
+
+
+def test_pilha():
+    pilha = Pilha()
+
+    pilha.empilhar(1)
+
+    assert pilha.desempilhar() == 1

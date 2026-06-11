@@ -1,6 +1,10 @@
 from servicos.clientes import GerenciadorClientes
 from servicos.atendentes import GerenciadorAtendentes
 
+from servicos.atendimentos import GerenciadorAtendimentos
+
+atendimentos = GerenciadorAtendimentos()
+
 
 clientes = GerenciadorClientes()
 atendentes = GerenciadorAtendentes()
@@ -106,6 +110,116 @@ def menu_atendentes():
                 print(atendente)
 
 
+def menu_atendimento():
+    while True:
+        print("\n=== ATENDIMENTOS ===")
+        print("1 - Entrar na fila")
+        print("2 - Chamar próximo")
+        print("3 - Finalizar atendimento")
+        print("4 - Histórico cliente")
+        print("5 - Desfazer última finalização")
+        print("0 - Voltar")
+
+        opcao = input("Escolha: ")
+
+        if opcao == "0":
+            return
+
+        elif opcao == "1":
+            try:
+                id_cliente = int(input("ID cliente: "))
+
+                cliente = clientes.buscar_cliente(id_cliente)
+
+                if not cliente:
+                    print("Cliente não encontrado.")
+                    continue
+
+                atendimentos.abrir_atendimento(cliente)
+
+                print("Cliente entrou na fila.")
+
+            except ValueError:
+                print("Entrada inválida.")
+
+        elif opcao == "2":
+            try:
+                id_atendente = int(input("ID atendente: "))
+
+                atendente = atendentes.buscar_atendente(
+                    id_atendente
+                )
+
+                if not atendente:
+                    print("Atendente não encontrado.")
+                    continue
+
+                atendimento = (
+                    atendimentos.chamar_proximo(atendente)
+                )
+
+                if atendimento:
+                    print("Atendimento iniciado:")
+                    print(atendimento)
+                else:
+                    print("Nenhum cliente na fila.")
+
+            except ValueError:
+                print("Entrada inválida.")
+
+        elif opcao == "3":
+            try:
+                id_atendente = int(input("ID atendente: "))
+                duracao = int(
+                    input("Duração em minutos: ")
+                )
+
+                atendente = atendentes.buscar_atendente(
+                    id_atendente
+                )
+
+                if not atendente:
+                    print("Atendente não encontrado.")
+                    continue
+
+                if atendimentos.finalizar_atendimento(
+                    atendente,
+                    duracao
+                ):
+                    print("Atendimento finalizado.")
+                else:
+                    print("Não existe atendimento aberto.")
+
+            except ValueError:
+                print("Entrada inválida.")
+
+        elif opcao == "4":
+            try:
+                id_cliente = int(input("ID cliente: "))
+
+                historico = (
+                    atendimentos.historico_cliente(
+                        id_cliente
+                    )
+                )
+
+                if not historico:
+                    print("Nenhum atendimento.")
+                    continue
+
+                for item in historico:
+                    print(item)
+
+            except ValueError:
+                print("Entrada inválida.")
+
+        elif opcao == "5":
+            if atendimentos.desfazer_ultima_finalizacao():
+                print("Última finalização desfeita.")
+            else:
+                print("Nada para desfazer.")
+
+
 def exibir_menu():
     print("\n=== SISTEMA DE ATENDIMENTO ===")
     print("1 - Clientes")
@@ -131,8 +245,11 @@ def main():
         elif opcao == "2":
             menu_atendentes()
 
+        elif opcao == "3":
+            menu_atendimento()
+
         else:
-            print("Funcionalidade ainda não implementada.")
+            print("Opção inválida.")
 
 
 if __name__ == "__main__":
