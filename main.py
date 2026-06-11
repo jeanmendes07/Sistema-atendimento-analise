@@ -1,7 +1,109 @@
-from modelos.cliente import Cliente
-from estruturas.fila import Fila
-from estruturas.pilha import Pilha
-from estruturas.lista_encadeada import ListaEncadeada
+from servicos.clientes import GerenciadorClientes
+from servicos.atendentes import GerenciadorAtendentes
+
+
+clientes = GerenciadorClientes()
+atendentes = GerenciadorAtendentes()
+
+
+def menu_clientes():
+    while True:
+        print("\n=== CLIENTES ===")
+        print("1 - Cadastrar")
+        print("2 - Listar")
+        print("3 - Buscar por ID")
+        print("0 - Voltar")
+
+        opcao = input("Escolha: ")
+
+        if opcao == "0":
+            return
+
+        elif opcao == "1":
+            try:
+                id_cliente = int(input("ID: "))
+                nome = input("Nome: ")
+                telefone = input("Telefone: ")
+
+                prioridade = (
+                    input("Prioridade? (s/n): ").lower() == "s"
+                )
+
+                if clientes.cadastrar_cliente(
+                    id_cliente,
+                    nome,
+                    telefone,
+                    prioridade
+                ):
+                    print("Cliente cadastrado.")
+                else:
+                    print("ID já existe.")
+
+            except ValueError:
+                print("Entrada inválida.")
+
+        elif opcao == "2":
+            lista = clientes.listar_clientes()
+
+            if not lista:
+                print("Nenhum cliente cadastrado.")
+                continue
+
+            for cliente in lista:
+                print(cliente)
+
+        elif opcao == "3":
+            try:
+                id_cliente = int(input("ID: "))
+
+                cliente = clientes.buscar_cliente(id_cliente)
+
+                if cliente:
+                    print(cliente)
+                else:
+                    print("Cliente não encontrado.")
+
+            except ValueError:
+                print("ID inválido.")
+
+
+def menu_atendentes():
+    while True:
+        print("\n=== ATENDENTES ===")
+        print("1 - Cadastrar")
+        print("2 - Listar")
+        print("0 - Voltar")
+
+        opcao = input("Escolha: ")
+
+        if opcao == "0":
+            return
+
+        elif opcao == "1":
+            try:
+                id_atendente = int(input("ID: "))
+                nome = input("Nome: ")
+
+                if atendentes.cadastrar_atendente(
+                    id_atendente,
+                    nome
+                ):
+                    print("Atendente cadastrado.")
+                else:
+                    print("ID já existe.")
+
+            except ValueError:
+                print("Entrada inválida.")
+
+        elif opcao == "2":
+            lista = atendentes.listar_atendentes()
+
+            if not lista:
+                print("Nenhum atendente cadastrado.")
+                continue
+
+            for atendente in lista:
+                print(atendente)
 
 
 def exibir_menu():
@@ -13,44 +115,7 @@ def exibir_menu():
     print("0 - Sair")
 
 
-def testar_estruturas():
-    print("\n=== TESTE FILA ===")
-
-    fila = Fila()
-
-    fila.enfileirar("Cliente A")
-    fila.enfileirar("Cliente B")
-
-    print("Primeiro:", fila.primeiro())
-    print("Saiu:", fila.desenfileirar())
-
-    print("\n=== TESTE PILHA ===")
-
-    pilha = Pilha()
-
-    pilha.empilhar("Atendimento 1")
-    pilha.empilhar("Atendimento 2")
-
-    print("Topo:", pilha.topo())
-    print("Desempilhado:", pilha.desempilhar())
-
-    print("\n=== TESTE LISTA ENCADEADA ===")
-
-    lista = ListaEncadeada()
-
-    cliente1 = Cliente(1, "João", "1111")
-    cliente2 = Cliente(2, "Maria", "2222")
-
-    lista.adicionar(cliente1)
-    lista.adicionar(cliente2)
-
-    for cliente in lista.listar():
-        print(cliente)
-
-
 def main():
-    testar_estruturas()
-
     while True:
         exibir_menu()
 
@@ -60,7 +125,14 @@ def main():
             print("Encerrando sistema...")
             break
 
-        print("Funcionalidade ainda não implementada.")
+        elif opcao == "1":
+            menu_clientes()
+
+        elif opcao == "2":
+            menu_atendentes()
+
+        else:
+            print("Funcionalidade ainda não implementada.")
 
 
 if __name__ == "__main__":

@@ -1,12 +1,27 @@
-from modelos.cliente import Cliente
-from estruturas.lista_encadeada import ListaEncadeada
+from servicos.clientes import GerenciadorClientes
 
 
-def test_adicionar_cliente():
-    lista = ListaEncadeada()
+def test_cadastro_cliente():
+    gerenciador = GerenciadorClientes()
 
-    cliente = Cliente(1, "João", "111")
+    resultado = gerenciador.cadastrar_cliente(
+        1,
+        "João",
+        "111"
+    )
 
-    lista.adicionar(cliente)
+    assert resultado is True
 
-    assert lista.tamanho() == 1
+
+def test_busca_cliente():
+    gerenciador = GerenciadorClientes()
+
+    gerenciador.cadastrar_cliente(
+        1,
+        "João",
+        "111"
+    )
+
+    cliente = gerenciador.buscar_cliente(1)
+
+    assert cliente.nome == "João"
