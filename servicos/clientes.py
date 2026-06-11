@@ -59,3 +59,13 @@ class GerenciadorClientes:
         )
 
         return True
+    
+    def carregar_clientes(self, clientes):
+        self.clientes = sorted(
+            clientes,
+            key=lambda c: c.id
+        )
+
+        for cliente in clientes:
+            if cliente.ativo:
+                self.clientes_ativos.adicionar(cliente)

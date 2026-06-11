@@ -3,11 +3,36 @@ from servicos.atendentes import GerenciadorAtendentes
 
 from servicos.atendimentos import GerenciadorAtendimentos
 
+from persistencia.arquivos import (
+    salvar_clientes,
+    salvar_atendentes,
+    salvar_atendimentos,
+    carregar_clientes,
+    carregar_atendentes,
+    carregar_atendimentos
+)
+
 atendimentos = GerenciadorAtendimentos()
+
+
 
 
 clientes = GerenciadorClientes()
 atendentes = GerenciadorAtendentes()
+
+clientes.carregar_clientes(
+    carregar_clientes("dados/clientes.json")
+)
+
+atendentes.carregar_atendentes(
+    carregar_atendentes("dados/atendentes.json")
+)
+
+atendimentos.carregar_atendimentos(
+    carregar_atendimentos(
+        "dados/atendimentos.json"
+    )
+)
 
 
 def menu_clientes():
@@ -228,6 +253,22 @@ def exibir_menu():
     print("4 - Relatórios")
     print("0 - Sair")
 
+def salvar_tudo():
+    salvar_clientes(
+        clientes.clientes,
+        "dados/clientes.json"
+    )
+
+    salvar_atendentes(
+        atendentes.atendentes,
+        "dados/atendentes.json"
+    )
+
+    salvar_atendimentos(
+        atendimentos.atendimentos,
+        "dados/atendimentos.json"
+    )
+
 
 def main():
     while True:
@@ -236,6 +277,8 @@ def main():
         opcao = input("Escolha uma opção: ")
 
         if opcao == "0":
+            salvar_tudo()
+            print("Dados salvos.")
             print("Encerrando sistema...")
             break
 

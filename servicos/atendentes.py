@@ -28,3 +28,6 @@ class GerenciadorAtendentes:
                 return atendente
 
         return None
+    
+    def carregar_atendentes(self, atendentes):
+        self.atendentes = atendentes

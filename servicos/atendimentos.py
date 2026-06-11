@@ -95,3 +95,12 @@ class GerenciadorAtendimentos:
             for atendimento in self.atendimentos
             if atendimento.cliente_id == id_cliente
         ]
+    
+    def carregar_atendimentos(self, atendimentos):
+        self.atendimentos = atendimentos
+
+        if atendimentos:
+            self.proximo_id = (
+                max(a.id for a in atendimentos)
+                + 1
+            )

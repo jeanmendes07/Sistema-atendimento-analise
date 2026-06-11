@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "id": 1,
+        "nome": "João",
+        "telefone": "123",
+        "prioridade": false,
+        "ativo": true
+    },
+    {
+        "id": 2,
+        "nome": "Maria",
+        "telefone": "123456",
+        "prioridade": false,
+        "ativo": true
+    }
+]
