@@ -33,14 +33,29 @@ class GerenciadorClientes:
     def buscar_cliente(self, id_cliente):
         return busca_binaria(self.clientes, id_cliente)
 
-    def remover_cliente(self, id_cliente):
+    def remover_cliente(
+    self,
+    id_cliente,
+    gerenciador_atendimentos=None
+    ):
         cliente = self.buscar_cliente(id_cliente)
 
         if not cliente:
             return False
 
+        if (
+            gerenciador_atendimentos
+            and
+            gerenciador_atendimentos.cliente_em_atendimento(
+                id_cliente
+            )
+        ):
+            return False
+
         cliente.ativo = False
 
-        self.clientes_ativos.remover_por_id(id_cliente)
+        self.clientes_ativos.remover_por_id(
+            id_cliente
+        )
 
         return True

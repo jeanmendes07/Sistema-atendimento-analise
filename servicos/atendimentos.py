@@ -9,7 +9,7 @@ class GerenciadorAtendimentos:
         self.fila_normal = Fila()
 
         self.atendimentos = []
-        self.atendimento_atual = None
+        self.atendimentos_abertos = {}
 
         self.pilha_desfazer = Pilha()
 
@@ -46,25 +46,38 @@ class GerenciadorAtendimentos:
 
         atendente.ocupado = True
 
-        self.atendimento_atual = atendimento
+        self.atendimentos_abertos[atendente.id] = atendimento
 
         return atendimento
 
     def finalizar_atendimento(self, atendente, duracao):
-        if self.atendimento_atual is None:
+
+        atendimento = self.atendimentos_abertos.get(
+            atendente.id
+        )
+
+        if atendimento is None:
             return False
 
-        self.atendimento_atual.finalizar(duracao)
+        atendimento.finalizar(duracao)
 
-        self.atendimentos.append(self.atendimento_atual)
+        self.atendimentos.append(atendimento)
 
-        self.pilha_desfazer.empilhar(self.atendimento_atual)
+        self.pilha_desfazer.empilhar(atendimento)
+
+        del self.atendimentos_abertos[atendente.id]
 
         atendente.ocupado = False
 
-        self.atendimento_atual = None
-
         return True
+    
+    def cliente_em_atendimento(self, id_cliente):
+        for atendimento in self.atendimentos_abertos.values():
+
+            if atendimento.cliente_id == id_cliente:
+                return True
+
+        return False
 
     def desfazer_ultima_finalizacao(self):
         ultimo = self.pilha_desfazer.desempilhar()
