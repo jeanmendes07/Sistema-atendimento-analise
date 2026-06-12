@@ -1,6 +1,6 @@
 from servicos.clientes import GerenciadorClientes
 from servicos.atendentes import GerenciadorAtendentes
-
+from servicos.relatorios import Relatorios
 from servicos.atendimentos import GerenciadorAtendimentos
 
 from persistencia.arquivos import (
@@ -244,6 +244,83 @@ def menu_atendimento():
             else:
                 print("Nada para desfazer.")
 
+def menu_relatorios():
+
+    while True:
+
+        print("\n=== RELATÓRIOS ===")
+        print("1 - Tempo médio")
+        print("2 - Top 5 clientes")
+        print("3 - Exportar CSV")
+        print("4 - Ordenar por duração")
+        print("0 - Voltar")
+
+        opcao = input("Escolha: ")
+
+        if opcao == "0":
+            return
+
+        elif opcao == "1":
+
+            media = (
+                Relatorios.tempo_medio_atendimento(
+                    atendimentos.atendimentos
+                )
+            )
+
+            print(
+                f"Tempo médio: "
+                f"{media:.2f} minutos"
+            )
+
+        elif opcao == "2":
+
+            ranking = (
+                Relatorios.top_5_clientes(
+                    atendimentos.atendimentos
+                )
+            )
+
+            if not ranking:
+                print("Sem dados.")
+                continue
+
+            for cliente, total in ranking:
+                print(
+                    f"Cliente {cliente}: "
+                    f"{total} atendimentos"
+                )
+
+        elif opcao == "3":
+
+            Relatorios.exportar_csv(
+                atendimentos.atendimentos,
+                "dados/relatorio.csv"
+            )
+
+            print(
+                "Relatório exportado para "
+                "dados/relatorio.csv"
+            )
+
+        elif opcao == "4":
+
+            ordenados = (
+                Relatorios.merge_sort(
+                    atendimentos.atendimentos
+                )
+            )
+
+            if not ordenados:
+                print("Sem dados.")
+                continue
+
+            for atendimento in ordenados:
+                print(
+                    f"ID {atendimento.id}"
+                    f" - {atendimento.duracao} min"
+                )
+
 
 def exibir_menu():
     print("\n=== SISTEMA DE ATENDIMENTO ===")
@@ -290,6 +367,9 @@ def main():
 
         elif opcao == "3":
             menu_atendimento()
+
+        elif opcao == "4":
+            menu_relatorios()
 
         else:
             print("Opção inválida.")

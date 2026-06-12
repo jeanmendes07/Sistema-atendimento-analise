@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "id": 1,
+        "nome": "Bababoi",
+        "ocupado": false
+    },
+    {
+        "id": 2,
+        "nome": "Mbappeso",
+        "ocupado": false
+    }
+]
