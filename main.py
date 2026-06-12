@@ -2,6 +2,7 @@ from servicos.clientes import GerenciadorClientes
 from servicos.atendentes import GerenciadorAtendentes
 from servicos.relatorios import Relatorios
 from servicos.atendimentos import GerenciadorAtendimentos
+from persistencia.logs import registrar_log
 
 from persistencia.arquivos import (
     salvar_clientes,
@@ -43,6 +44,7 @@ def menu_clientes():
         print("3 - Buscar por ID")
         print("0 - Voltar")
 
+
         opcao = input("Escolha: ")
 
         if opcao == "0":
@@ -65,6 +67,10 @@ def menu_clientes():
                     prioridade
                 ):
                     print("Cliente cadastrado.")
+
+                    registrar_log(
+                        f"Cliente cadastrado: {nome}"
+                    )
                 else:
                     print("ID já existe.")
 
@@ -118,6 +124,10 @@ def menu_atendentes():
                     nome
                 ):
                     print("Atendente cadastrado.")
+
+                    registrar_log(
+                        f"Atendente cadastrado: {nome}"
+                    )
                 else:
                     print("ID já existe.")
 
@@ -163,6 +173,10 @@ def menu_atendimento():
                 atendimentos.abrir_atendimento(cliente)
 
                 print("Cliente entrou na fila.")
+
+                registrar_log(
+                    f"Cliente {id_cliente} entrou na fila"
+                )
 
             except ValueError:
                 print("Entrada inválida.")
@@ -212,6 +226,10 @@ def menu_atendimento():
                     duracao
                 ):
                     print("Atendimento finalizado.")
+
+                    registrar_log(
+                        f"Atendimento finalizado pelo atendente {id_atendente}"
+                    )
                 else:
                     print("Não existe atendimento aberto.")
 
@@ -350,6 +368,12 @@ def salvar_tudo():
 def main():
     while True:
         exibir_menu()
+
+        if atendimentos.verificar_filas():
+            print(
+                "\n⚠ ALERTA:"
+                " fila com alta demanda."
+            )
 
         opcao = input("Escolha uma opção: ")
 

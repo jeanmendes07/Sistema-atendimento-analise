@@ -51,3 +51,15 @@ def test_merge_sort():
     )
 
     assert resultado[0].duracao == 10
+
+    def test_top_5():
+
+        a1 = Atendimento(1, 1, 1)
+        a2 = Atendimento(2, 1, 1)
+        a3 = Atendimento(3, 2, 1)
+
+        ranking = Relatorios.top_5_clientes(
+            [a1, a2, a3]
+        )
+
+        assert ranking[0][0] == 1

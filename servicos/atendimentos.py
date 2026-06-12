@@ -104,3 +104,13 @@ class GerenciadorAtendimentos:
                 max(a.id for a in atendimentos)
                 + 1
             )
+
+    def verificar_filas(self):
+
+        total = (
+            self.fila_prioridade.tamanho()
+            +
+            self.fila_normal.tamanho()
+        )
+
+        return total >= 5
